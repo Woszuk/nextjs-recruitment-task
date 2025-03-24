@@ -1,11 +1,14 @@
+import UserCards from "@/app/components/organisms/UserCards";
+import List from "@/app/components/templates/List";
 import { getUsers } from "@/app/lib/actions/user-actions";
 
 export default async function Home() {
-  const { users } = await getUsers();
+  const { error, users } = await getUsers();
 
   return (
-    <div className="flex flex-col">
-      {users && users.map((user) => <div key={user.email}>{user.email}</div>)}
-    </div>
+    <List title="users">
+      {error && <div>{error}</div>}
+      {users && <UserCards users={users} />}
+    </List>
   );
 }
