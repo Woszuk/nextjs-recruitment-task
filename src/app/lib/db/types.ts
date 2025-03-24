@@ -1,8 +1,8 @@
 import { AddressType } from "@/app/lib/enums/address";
 import { UserStatus } from "@/app/lib/enums/user";
-import { Generated } from "kysely";
+import { Generated, Selectable } from "kysely";
 
-export type User = {
+export type UserTable = {
   id: Generated<number>;
   first_name?: string;
   last_name: string;
@@ -13,7 +13,9 @@ export type User = {
   updatedAt: Date;
 };
 
-export type Address = {
+export type User = Selectable<UserTable>;
+
+export type AddressTable = {
   user_id: string;
   address_type: AddressType;
   valid_form: Date;
@@ -26,7 +28,9 @@ export type Address = {
   updatedAt: Date;
 };
 
+export type Address = Selectable<AddressTable>;
+
 export type Database = {
-  users: User;
-  users_addresses: Address;
+  users: UserTable;
+  users_addresses: AddressTable;
 };
