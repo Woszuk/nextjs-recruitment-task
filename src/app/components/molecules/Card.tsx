@@ -4,7 +4,7 @@ type CardProps = {
 
 export default function Card({ children }: CardProps) {
   return (
-    <div className="flex flex-col border-1 p-3 rounded-lg cursor-pointer hover:bg-gray-50">
+    <div className="flex flex-col border-2 border-primary-light p-3 rounded-lg cursor-pointer hover:border-primary-dark">
       {children}
     </div>
   );

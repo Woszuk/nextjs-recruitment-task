@@ -11,7 +11,7 @@ export default function UserCards({ users }: UserCardProps) {
   return (
     <>
       {users.map((user) => (
-        <Card>
+        <Card key={user.id}>
           <UserName
             lastName={user.last_name}
             firstName={user.first_name}
