@@ -1,8 +1,8 @@
 "use client";
 
 import Modal from "@/app/components/atoms/Modal";
+import CreateUserForm from "@/app/components/organisms/CreateUserForm";
 import UserCards from "@/app/components/organisms/UserCards";
-import UserForm from "@/app/components/organisms/UserForm";
 import List from "@/app/components/templates/List";
 import { getUsers } from "@/app/lib/actions/user-actions";
 import { User } from "@/app/lib/db/types";
@@ -34,7 +34,7 @@ export default function Home() {
         {users && <UserCards users={users} />}
       </List>
       <Modal open={open} handleClose={() => setOpen(false)}>
-        <UserForm />
+        <CreateUserForm />
       </Modal>
     </>
   );
