@@ -15,17 +15,15 @@ export default function List({
 }: ListProps) {
   return (
     <div className="flex flex-col gap-5">
-      <div className="relative flex items-center justify-center">
+      <div className="relative flex items-center sm:justify-center justify-between ">
         <p className="text-2xl font-bold uppercase">{title}</p>
         <Button
-          className="absolute right-10"
+          className="sm:absolute sm:right-10"
           label={buttonLabel}
           onClick={toggleOpen}
         />
       </div>
-      <div className="grid grid-cols-auto grid-cols-2 gap-2 font-medium">
-        {children}
-      </div>
+      <div className="grid lg:grid-cols-2 gap-2 font-medium">{children}</div>
     </div>
   );
 }

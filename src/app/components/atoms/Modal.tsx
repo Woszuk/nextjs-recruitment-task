@@ -16,7 +16,7 @@ export default function Modal({ children, open, handleClose }: ModalProps) {
   return (
     <div className="fixed inset-0 p-5 bg-black/30  flex justify-center items-center">
       <div
-        className={`bg-gray-50 p-5 shadow-lg w-full max-w-[500px]`}
+        className={`bg-gray-50 p-5 shadow-lg w-full max-w-[500px] overflow-auto max-h-[90vh]`}
         ref={ref}
       >
         {children}
