@@ -18,9 +18,9 @@ export type NewUser = Insertable<UserTable>;
 export type UpdateUser = Updateable<UserTable>;
 
 export type AddressTable = {
-  user_id: string;
+  user_id: number;
   address_type: AddressType;
-  valid_form: Date;
+  valid_from: Date;
   post_code: string;
   city: string;
   country_code: string;
@@ -30,7 +30,10 @@ export type AddressTable = {
   updatedAt: Generated<Date>;
 };
 
+export type NewAddress = Insertable<AddressTable>;
+export type UpdateAddress = Updateable<AddressTable>;
 export type Address = Selectable<AddressTable>;
+export type AddressWithUserName = Address & { name: string };
 
 export type Database = {
   users: UserTable;
