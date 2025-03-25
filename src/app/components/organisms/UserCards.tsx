@@ -1,13 +1,19 @@
 import UserName from "@/app/components/atoms/UserName";
-import Card from "@/app/components/molecules/Card";
+import UserCard from "@/app/components/molecules/UserCard";
 import { User } from "@/app/lib/db/types";
 import { capitalize } from "@/app/utils/capitalize";
+import { useRouter } from "next/navigation";
 
 type UserCardProps = {
   users: User[];
 };
 
 export default function UserCards({ users }: UserCardProps) {
+  const router = useRouter();
+
+  const onClick = (id: number) => {
+    router.push(`/${id}/addresses`);
+  };
   return (
     <>
       {users.map((user) => {
@@ -15,7 +21,7 @@ export default function UserCards({ users }: UserCardProps) {
           ? `${user.first_name} ${user.last_name}`
           : user.last_name;
         return (
-          <Card key={user.id} user={user} name={userName}>
+          <UserCard key={user.id} user={user} name={userName} onClick={onClick}>
             <UserName
               lastName={user.last_name}
               firstName={user.first_name}
@@ -23,7 +29,7 @@ export default function UserCards({ users }: UserCardProps) {
             />
             <div>Email: {user.email}</div>
             <div>Status: {capitalize(user.status)}</div>
-          </Card>
+          </UserCard>
         );
       })}
     </>
