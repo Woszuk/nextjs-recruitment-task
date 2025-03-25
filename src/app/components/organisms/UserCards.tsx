@@ -10,17 +10,22 @@ type UserCardProps = {
 export default function UserCards({ users }: UserCardProps) {
   return (
     <>
-      {users.map((user) => (
-        <Card key={user.id}>
-          <UserName
-            lastName={user.last_name}
-            firstName={user.first_name}
-            initials={user.initials}
-          />
-          <div>Email: {user.email}</div>
-          <div>Status: {capitalize(user.status)}</div>
-        </Card>
-      ))}
+      {users.map((user) => {
+        const userName = user.first_name
+          ? `${user.first_name} ${user.last_name}`
+          : user.last_name;
+        return (
+          <Card key={user.id} id={user.id} name={userName}>
+            <UserName
+              lastName={user.last_name}
+              firstName={user.first_name}
+              initials={user.initials}
+            />
+            <div>Email: {user.email}</div>
+            <div>Status: {capitalize(user.status)}</div>
+          </Card>
+        );
+      })}
     </>
   );
 }
