@@ -6,10 +6,10 @@ import Form from "@/app/components/templates/Form";
 import Select from "@/app/components/molecules/Select";
 import TextField from "@/app/components/molecules/TextField";
 import { User } from "@/app/lib/db/types";
-import { FormData, schema } from "@/app/lib/schemas/user-schema";
+import { UserFormData, userSchema } from "@/app/lib/schemas/user-schema";
 
 type UserFormProps = {
-  onSubmit: (data: FormData) => void;
+  onSubmit: (data: UserFormData) => void;
   title: string;
   buttonLabel?: string;
   user?: User;
@@ -21,7 +21,7 @@ export default function UserForm({
   title,
   buttonLabel = "Create",
 }: UserFormProps) {
-  const { handleSubmit, control } = useForm<FormData>({
+  const { handleSubmit, control } = useForm<UserFormData>({
     defaultValues: {
       last_name: user?.last_name || "",
       email: user?.email || "",
@@ -29,7 +29,7 @@ export default function UserForm({
       first_name: user?.first_name || undefined,
       initials: user?.initials || undefined,
     },
-    resolver: zodResolver(schema),
+    resolver: zodResolver(userSchema),
   });
 
   return (
@@ -44,6 +44,7 @@ export default function UserForm({
         render={({ field, fieldState }) => (
           <TextField
             {...field}
+            id="first_name"
             label="First Name"
             error={fieldState.error?.message}
           />
@@ -55,6 +56,7 @@ export default function UserForm({
         render={({ field, fieldState }) => (
           <TextField
             {...field}
+            id="last_name"
             label="Last Name"
             error={fieldState.error?.message}
           />
@@ -67,6 +69,7 @@ export default function UserForm({
           <TextField
             {...field}
             label="Initials"
+            id="initials"
             error={fieldState.error?.message}
           />
         )}
@@ -93,7 +96,9 @@ export default function UserForm({
         render={({ field, fieldState }) => (
           <TextField
             {...field}
+            id="email"
             label="Email"
+            type="email"
             error={fieldState.error?.message}
           />
         )}

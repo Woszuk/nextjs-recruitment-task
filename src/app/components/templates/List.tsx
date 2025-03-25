@@ -23,7 +23,7 @@ export default function List({
           onClick={toggleOpen}
         />
       </div>
-      <div className="grid grid-cols-auto grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-2 font-medium">
+      <div className="grid grid-cols-auto grid-cols-2 gap-2 font-medium">
         {children}
       </div>
     </div>

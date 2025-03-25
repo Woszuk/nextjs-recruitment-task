@@ -4,6 +4,7 @@ type InputContainerProps = {
   children: React.ReactNode;
   label: string;
   value: InputHTMLAttributes<HTMLInputElement>["value"];
+  id?: string;
   error?: string;
 };
 
@@ -12,6 +13,7 @@ export default function InputContainer({
   error,
   value,
   label,
+  id,
 }: InputContainerProps) {
   return (
     <div className="flex flex-col">
@@ -24,6 +26,7 @@ export default function InputContainer({
               ? "top-0 text-sm -translate-y-1/2"
               : "top-1/2 -translate-y-1/2"
           }`}
+          htmlFor={id}
         >
           {label}
         </label>

@@ -12,7 +12,12 @@ export default function TextField({
   ...props
 }: TextFieldProps) {
   return (
-    <InputContainer error={error} label={label} value={props.value}>
+    <InputContainer
+      error={error}
+      label={label}
+      value={props.value}
+      id={props.id}
+    >
       <input
         type={type}
         {...props}

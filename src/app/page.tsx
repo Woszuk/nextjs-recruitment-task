@@ -7,7 +7,7 @@ import List from "@/app/components/templates/List";
 import { createUser, getUsers } from "@/app/lib/actions/user-actions";
 import { User } from "@/app/lib/db/types";
 import { useEffect, useState } from "react";
-import { FormData } from "@/app/lib/schemas/user-schema";
+import { UserFormData } from "@/app/lib/schemas/user-schema";
 
 export default function Home() {
   const [open, setOpen] = useState<boolean>(false);
@@ -28,7 +28,7 @@ export default function Home() {
     fetchUsers();
   }, []);
 
-  const onSubmit = async (data: FormData) => {
+  const onSubmit = async (data: UserFormData) => {
     await createUser(data);
     handleClose();
   };
