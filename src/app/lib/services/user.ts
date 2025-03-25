@@ -25,9 +25,19 @@ export const createUserServices = () => {
     }
   };
 
+  const remove = async (id: number) => {
+    try {
+      await repository.remove(id);
+    } catch (error) {
+      logger.error({ error }, "Failed to remove user");
+      return { error: "Failed to remove user" };
+    }
+  };
+
   return {
     getAll,
     create,
+    remove,
   };
 };
 

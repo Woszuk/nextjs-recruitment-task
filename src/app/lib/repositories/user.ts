@@ -10,5 +10,9 @@ export const createUserRepository = () => {
     return db.insertInto("users").values(data).returningAll().execute();
   };
 
-  return { findAll, create };
+  const remove = (id: number) => {
+    return db.deleteFrom("users").where("id", "=", id).executeTakeFirst();
+  };
+
+  return { findAll, create, remove };
 };

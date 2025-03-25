@@ -10,3 +10,7 @@ export async function getUsers() {
 export async function createUser(user: NewUser) {
   return userServices.create(user);
 }
+
+export async function deleteUser(id: number) {
+  return userServices.remove(id);
+}
