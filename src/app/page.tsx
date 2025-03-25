@@ -1,12 +1,13 @@
 "use client";
 
 import Modal from "@/app/components/atoms/Modal";
-import CreateUserForm from "@/app/components/organisms/CreateUserForm";
+import UserForm from "@/app/components/organisms/UserForm";
 import UserCards from "@/app/components/organisms/UserCards";
 import List from "@/app/components/templates/List";
-import { getUsers } from "@/app/lib/actions/user-actions";
+import { createUser, getUsers } from "@/app/lib/actions/user-actions";
 import { User } from "@/app/lib/db/types";
 import { useEffect, useState } from "react";
+import { FormData } from "@/app/lib/schemas/user-schema";
 
 export default function Home() {
   const [open, setOpen] = useState<boolean>(false);
@@ -19,9 +20,18 @@ export default function Home() {
     setUsers(users ?? []);
   };
 
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   useEffect(() => {
     fetchUsers();
   }, []);
+
+  const onSubmit = async (data: FormData) => {
+    await createUser(data);
+    handleClose();
+  };
 
   return (
     <>
@@ -33,8 +43,8 @@ export default function Home() {
         {error && <div>{error}</div>}
         {users && <UserCards users={users} />}
       </List>
-      <Modal open={open} handleClose={() => setOpen(false)}>
-        <CreateUserForm />
+      <Modal open={open} handleClose={handleClose}>
+        <UserForm onSubmit={onSubmit} title="Create User" />
       </Modal>
     </>
   );

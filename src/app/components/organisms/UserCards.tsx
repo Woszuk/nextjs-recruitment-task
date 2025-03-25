@@ -15,7 +15,7 @@ export default function UserCards({ users }: UserCardProps) {
           ? `${user.first_name} ${user.last_name}`
           : user.last_name;
         return (
-          <Card key={user.id} id={user.id} name={userName}>
+          <Card key={user.id} user={user} name={userName}>
             <UserName
               lastName={user.last_name}
               firstName={user.first_name}

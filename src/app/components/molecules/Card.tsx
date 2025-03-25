@@ -2,14 +2,16 @@ import Delete from "@/app/components/molecules/Delete";
 import { DotsIcon } from "@/app/components/atoms/icons/DotsIcon";
 import Popover from "@/app/components/atoms/Popover";
 import { useState } from "react";
+import Edit from "@/app/components/molecules/Edit";
+import { User } from "@/app/lib/db/types";
 
 type CardProps = {
   children: React.ReactNode;
-  id: number;
   name: string;
+  user: User;
 };
 
-export default function Card({ children, id, name }: CardProps) {
+export default function Card({ children, user, name }: CardProps) {
   const [open, setOpen] = useState<boolean>(false);
 
   const togglePopover = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -28,7 +30,8 @@ export default function Card({ children, id, name }: CardProps) {
         </div>
       </div>
       <Popover open={open} handleClose={() => setOpen(false)}>
-        <Delete name={name} id={id} />
+        <Edit user={user} />
+        <Delete name={name} id={user.id} />
       </Popover>
 
       {children}

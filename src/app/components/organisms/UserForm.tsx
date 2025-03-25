@@ -1,40 +1,43 @@
 import { useForm, Controller } from "react-hook-form";
-import { z } from "zod";
 import { UserStatus } from "@/app/lib/enums/user";
 import { capitalize } from "@/app/utils/capitalize";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Form from "@/app/components/templates/Form";
 import Select from "@/app/components/molecules/Select";
 import TextField from "@/app/components/molecules/TextField";
-import { createUser } from "@/app/lib/actions/user-actions";
+import { User } from "@/app/lib/db/types";
+import { FormData, schema } from "@/app/lib/schemas/user-schema";
 
-const schema = z.object({
-  first_name: z.string().optional(),
-  last_name: z.string().min(2, "Last name must be at least 2 characters long"),
-  email: z.string().email("Invalid email address"),
-  initials: z.string().optional(),
-  status: z.nativeEnum(UserStatus),
-});
+type UserFormProps = {
+  onSubmit: (data: FormData) => void;
+  title: string;
+  buttonLabel?: string;
+  user?: User;
+};
 
-type FormData = z.infer<typeof schema>;
-
-export default function CreateUserForm() {
+export default function UserForm({
+  user,
+  onSubmit,
+  title,
+  buttonLabel = "Create",
+}: UserFormProps) {
   const { handleSubmit, control } = useForm<FormData>({
     defaultValues: {
-      last_name: "",
-      email: "",
-      status: UserStatus.ACTIVE,
+      last_name: user?.last_name || "",
+      email: user?.email || "",
+      status: user?.status || UserStatus.ACTIVE,
+      first_name: user?.first_name || undefined,
+      initials: user?.initials || undefined,
     },
     resolver: zodResolver(schema),
   });
 
-  const onSubmit = async (data: FormData) => {
-    const { user } = await createUser(data);
-    console.log({ user });
-  };
-
   return (
-    <Form onSubmit={handleSubmit(onSubmit)} title="Create User">
+    <Form
+      onSubmit={handleSubmit(onSubmit)}
+      title={title}
+      buttonLabel={buttonLabel}
+    >
       <Controller
         name="first_name"
         control={control}
