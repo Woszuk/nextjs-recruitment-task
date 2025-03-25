@@ -1,23 +1,18 @@
 import Button from "@/app/components/atoms/Button";
 import Modal from "@/app/components/atoms/Modal";
-import { deleteUser } from "@/app/lib/actions/user-actions";
-import { useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 
 type DeleteProps = {
+  onClick: () => Promise<void>;
+  setOpen: Dispatch<SetStateAction<boolean>>;
+  open: boolean;
   name: string;
-  id: number;
 };
 
-export default function Delete({ name, id }: DeleteProps) {
-  const [open, setOpen] = useState<boolean>(false);
-
-  const openModal = () => {
+export default function Delete({ name, open, setOpen, onClick }: DeleteProps) {
+  const openModal = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
     setOpen((prev) => !prev);
-  };
-
-  const onClick = async () => {
-    await deleteUser(id);
-    handleClose();
   };
 
   const handleClose = () => {
