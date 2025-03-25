@@ -1,5 +1,5 @@
 import { logger } from "@/app/lib/config/logger";
-import { NewUser } from "@/app/lib/db/types";
+import { NewUser, UpdateUser } from "@/app/lib/db/types";
 import { createUserRepository } from "@/app/lib/repositories/user";
 
 export const createUserServices = () => {
@@ -34,10 +34,20 @@ export const createUserServices = () => {
     }
   };
 
+  const update = async ({ user, id }: { user: UpdateUser; id: number }) => {
+    try {
+      await repository.update({ data: user, id });
+    } catch (error) {
+      logger.error({ error }, "Failed to update user");
+      return { error: "Failed to update user" };
+    }
+  };
+
   return {
     getAll,
     create,
     remove,
+    update,
   };
 };
 

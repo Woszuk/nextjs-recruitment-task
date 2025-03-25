@@ -1,5 +1,5 @@
 import { db } from "@/app/lib/db";
-import { NewUser } from "@/app/lib/db/types";
+import { NewUser, UpdateUser } from "@/app/lib/db/types";
 
 export const createUserRepository = () => {
   const findAll = () => {
@@ -14,5 +14,13 @@ export const createUserRepository = () => {
     return db.deleteFrom("users").where("id", "=", id).executeTakeFirst();
   };
 
-  return { findAll, create, remove };
+  const update = ({ data, id }: { data: UpdateUser; id: number }) => {
+    return db
+      .updateTable("users")
+      .set(data)
+      .where("id", "=", id)
+      .executeTakeFirst();
+  };
+
+  return { findAll, create, remove, update };
 };
