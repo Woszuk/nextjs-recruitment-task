@@ -1,5 +1,6 @@
 import { AddressType } from "@/app/lib/enums/address";
 import { UserStatus } from "@/app/lib/enums/user";
+import { ISO3166Alpha3Code } from "@/app/lib/schemas/address-schema";
 import { Generated, Insertable, Selectable, Updateable } from "kysely";
 
 export type UserTable = {
@@ -23,7 +24,7 @@ export type AddressTable = {
   valid_from: Date;
   post_code: string;
   city: string;
-  country_code: string;
+  country_code: ISO3166Alpha3Code;
   street: string;
   building_number: string;
   created_at: Generated<Date>;

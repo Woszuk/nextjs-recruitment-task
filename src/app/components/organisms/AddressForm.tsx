@@ -8,6 +8,7 @@ import { Address } from "@/app/lib/db/types";
 import {
   AddressFormData,
   addressSchema,
+  ISO_3166_1_ALPHA3_CODES,
 } from "@/app/lib/schemas/address-schema";
 import { AddressType } from "@/app/lib/enums/address";
 import AddressPreview from "@/app/components/atoms/AddressPreview";
@@ -28,14 +29,14 @@ export default function AddressForm({
   const { handleSubmit, control, watch } = useForm<AddressFormData>({
     defaultValues: {
       address_type: address?.address_type || AddressType.HOME,
-      post_code: address?.post_code || "",
-      building_number: address?.building_number || "",
-      city: address?.city || "",
-      country_code: address?.country_code || "",
-      street: address?.street || "",
+      post_code: address?.post_code || undefined,
+      building_number: address?.building_number || undefined,
+      city: address?.city || undefined,
+      country_code: address?.country_code || undefined,
+      street: address?.street || undefined,
       valid_from: address?.valid_from
-        ? new Date(address.valid_from).toISOString().slice(0, 16)
-        : new Date().toISOString().slice(0, 16),
+        ? new Date(address.valid_from).toISOString().slice(0, 19)
+        : new Date().toISOString().slice(0, 19),
     },
     resolver: zodResolver(addressSchema),
   });
@@ -100,6 +101,22 @@ export default function AddressForm({
         name="country_code"
         control={control}
         render={({ field, fieldState }) => (
+          <Select
+            {...field}
+            options={ISO_3166_1_ALPHA3_CODES.map((val) => ({
+              label: val,
+              value: val,
+            }))}
+            id="country_code"
+            label="Country Code"
+            error={fieldState.error?.message}
+          />
+        )}
+      />
+      {/* <Controller
+        name="country_code"
+        control={control}
+        render={({ field, fieldState }) => (
           <TextField
             {...field}
             id="country_code"
@@ -107,7 +124,7 @@ export default function AddressForm({
             error={fieldState.error?.message}
           />
         )}
-      />
+      /> */}
 
       <Controller
         name="address_type"
@@ -125,6 +142,7 @@ export default function AddressForm({
           />
         )}
       />
+
       <Controller
         name="valid_from"
         control={control}
