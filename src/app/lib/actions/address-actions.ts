@@ -4,8 +4,16 @@ import { NewAddress, UpdateAddress } from "@/app/lib/db/types";
 import { AddressType } from "@/app/lib/enums/address";
 import { addressServices } from "@/app/lib/services/address";
 
-export async function getUserWithAddresses(userId: number) {
-  return addressServices.getUserWithAddresses(userId);
+export async function getUserWithAddresses({
+  pageSize,
+  page,
+  userId,
+}: {
+  pageSize: number;
+  page: number;
+  userId: number;
+}) {
+  return addressServices.getUserWithAddresses({ pageSize, page, userId });
 }
 
 export async function createAddress(address: NewAddress) {

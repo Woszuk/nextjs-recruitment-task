@@ -8,10 +8,18 @@ import { AddressType } from "@/app/lib/enums/address";
 import { sql } from "kysely";
 
 export const createAddressRepository = () => {
-  const findUserWithAddresses = (
-    userId: number
-  ): Promise<AddressWithUserName[]> => {
-    return db
+  const findUserWithAddresses = async ({
+    pageSize,
+    page,
+    userId,
+  }: {
+    pageSize: number;
+    page: number;
+    userId: number;
+  }): Promise<{ addresses: AddressWithUserName[]; totalItems: number }> => {
+    const offset = (page - 1) * pageSize;
+
+    const data = await db
       .selectFrom("users_addresses")
       .innerJoin("users", "users.id", "users_addresses.user_id")
       .selectAll("users_addresses")
@@ -21,7 +29,18 @@ export const createAddressRepository = () => {
         ),
       ])
       .where("user_id", "=", userId)
+      .limit(pageSize)
+      .offset(offset)
+      .orderBy("users_addresses.created_at desc")
       .execute();
+
+    const totalItems = await db
+      .selectFrom("users_addresses")
+      .select(({ fn }) => fn.count<number>("user_id").as("total"))
+      .where("user_id", "=", userId)
+      .executeTakeFirst();
+
+    return { addresses: data, totalItems: totalItems?.total || 0 };
   };
 
   const create = (data: NewAddress) => {
@@ -32,7 +51,7 @@ export const createAddressRepository = () => {
       .execute();
   };
 
-  const remove = ({
+  const remove = async ({
     userId,
     addressType,
     validFrom,
@@ -41,12 +60,15 @@ export const createAddressRepository = () => {
     addressType: AddressType;
     validFrom: Date;
   }) => {
-    return db
+    console.log(addressType, validFrom, userId);
+    const data = await db
       .deleteFrom("users_addresses")
       .where("user_id", "=", userId)
       .where("address_type", "=", addressType)
       .where("valid_from", "=", validFrom)
       .executeTakeFirst();
+
+    console.log(data);
   };
 
   const update = ({

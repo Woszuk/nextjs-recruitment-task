@@ -3,8 +3,14 @@
 import { NewUser, UpdateUser } from "@/app/lib/db/types";
 import { userServices } from "@/app/lib/services/user";
 
-export async function getUsers() {
-  return userServices.getAll();
+export async function getUsers({
+  pageSize,
+  page,
+}: {
+  pageSize: number;
+  page: number;
+}) {
+  return userServices.getAll({ page, pageSize });
 }
 
 export async function createUser(user: NewUser) {

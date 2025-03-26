@@ -2,8 +2,27 @@ import { db } from "@/app/lib/db";
 import { NewUser, UpdateUser } from "@/app/lib/db/types";
 
 export const createUserRepository = () => {
-  const findAll = () => {
-    return db.selectFrom("users").selectAll().execute();
+  const findAll = async ({
+    pageSize,
+    page,
+  }: {
+    pageSize: number;
+    page: number;
+  }) => {
+    const offset = (page - 1) * pageSize;
+    const data = await db
+      .selectFrom("users")
+      .selectAll()
+      .limit(pageSize)
+      .offset(offset)
+      .execute();
+
+    const totalItems = await db
+      .selectFrom("users")
+      .select(({ fn }) => fn.count<number>("id").as("total"))
+      .executeTakeFirst();
+
+    return { data, totalItems: totalItems?.total || 0 };
   };
 
   const create = (data: NewUser) => {

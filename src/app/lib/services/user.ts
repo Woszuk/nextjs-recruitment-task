@@ -5,9 +5,15 @@ import { createUserRepository } from "@/app/lib/repositories/user";
 export const createUserServices = () => {
   const repository = createUserRepository();
 
-  const getAll = async () => {
+  const getAll = async ({
+    pageSize,
+    page,
+  }: {
+    pageSize: number;
+    page: number;
+  }) => {
     try {
-      const users = await repository.findAll();
+      const users = await repository.findAll({ page, pageSize });
       return { users };
     } catch (error) {
       logger.error({ error }, "Failed to fetch users");
