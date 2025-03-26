@@ -10,6 +10,7 @@ import {
   addressSchema,
 } from "@/app/lib/schemas/address-schema";
 import { AddressType } from "@/app/lib/enums/address";
+import AddressPreview from "@/app/components/atoms/AddressPreview";
 
 type AddressFormProps = {
   onSubmit: (data: AddressFormData) => void;
@@ -24,7 +25,7 @@ export default function AddressForm({
   title,
   buttonLabel = "Create",
 }: AddressFormProps) {
-  const { handleSubmit, control } = useForm<AddressFormData>({
+  const { handleSubmit, control, watch } = useForm<AddressFormData>({
     defaultValues: {
       address_type: address?.address_type || AddressType.HOME,
       post_code: address?.post_code || "",
@@ -45,22 +46,32 @@ export default function AddressForm({
       title={title}
       buttonLabel={buttonLabel}
     >
+      <AddressPreview values={watch} />
       <Controller
-        name="address_type"
+        name="street"
         control={control}
         render={({ field, fieldState }) => (
-          <Select
+          <TextField
             {...field}
-            options={Object.entries(AddressType).map(([key, value]) => ({
-              label: capitalize(value),
-              value: key,
-            }))}
-            id="address_type"
-            label="Address Type"
+            id="street"
+            label="Street"
             error={fieldState.error?.message}
           />
         )}
       />
+      <Controller
+        name="building_number"
+        control={control}
+        render={({ field, fieldState }) => (
+          <TextField
+            {...field}
+            id="building_number"
+            label="Building Number"
+            error={fieldState.error?.message}
+          />
+        )}
+      />
+
       <Controller
         name="post_code"
         control={control}
@@ -97,31 +108,23 @@ export default function AddressForm({
           />
         )}
       />
-      <Controller
-        name="street"
-        control={control}
-        render={({ field, fieldState }) => (
-          <TextField
-            {...field}
-            id="street"
-            label="Street"
-            error={fieldState.error?.message}
-          />
-        )}
-      />
-      <Controller
-        name="building_number"
-        control={control}
-        render={({ field, fieldState }) => (
-          <TextField
-            {...field}
-            id="building_number"
-            label="Building Number"
-            error={fieldState.error?.message}
-          />
-        )}
-      />
 
+      <Controller
+        name="address_type"
+        control={control}
+        render={({ field, fieldState }) => (
+          <Select
+            {...field}
+            options={Object.entries(AddressType).map(([key, value]) => ({
+              label: capitalize(value),
+              value: key,
+            }))}
+            id="address_type"
+            label="Address Type"
+            error={fieldState.error?.message}
+          />
+        )}
+      />
       <Controller
         name="valid_from"
         control={control}
