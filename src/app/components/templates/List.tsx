@@ -1,9 +1,16 @@
 import Button from "@/app/components/atoms/Button";
+import Pagination from "@/app/components/atoms/Pagination";
+import { Dispatch, SetStateAction } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { PAGE_SIZE } from "@/app/constants";
 
 type ListProps = {
   children: React.ReactNode;
   title: string;
   buttonLabel: string;
+  totalItems: number;
+  currentPage: number;
+  setCurrentPage: Dispatch<SetStateAction<number>>;
   toggleOpen: (e: React.MouseEvent<HTMLElement>) => void;
 };
 
@@ -11,8 +18,19 @@ export default function List({
   children,
   title,
   buttonLabel,
+  totalItems,
+  currentPage,
+  setCurrentPage,
   toggleOpen,
 }: ListProps) {
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    router.push(`${pathname}?page=${page}`);
+  };
+
   return (
     <div className="flex flex-col gap-5">
       <div className="relative flex items-center sm:justify-center justify-between ">
@@ -23,7 +41,13 @@ export default function List({
           onClick={toggleOpen}
         />
       </div>
-      <div className="grid lg:grid-cols-2 gap-2 font-medium">{children}</div>
+      <div className="grid lg:grid-cols-2 gap-2 font-medium ">{children}</div>
+      <Pagination
+        currentPage={currentPage}
+        pageSize={PAGE_SIZE}
+        totalItems={totalItems}
+        onPageChange={handlePageChange}
+      />
     </div>
   );
 }
