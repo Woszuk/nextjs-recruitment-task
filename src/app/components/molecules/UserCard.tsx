@@ -32,6 +32,7 @@ export default function UserCard({
   const onDelete = async () => {
     await deleteUser(user.id);
     setOpenDeleteModal(false);
+    setOpenPopover(false);
   };
 
   const onSubmit = async (data: UserFormData) => {
@@ -57,6 +58,7 @@ export default function UserCard({
                 user={user}
                 onSubmit={(data: UserFormData) => {
                   onSubmit(data);
+                  setOpenPopover(false);
                   handleClose();
                 }}
                 title="Update user"

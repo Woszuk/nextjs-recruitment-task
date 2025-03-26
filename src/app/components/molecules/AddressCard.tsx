@@ -37,6 +37,7 @@ export default function AddressCard({
       validFrom: address.valid_from,
     });
     setOpenDeleteModal(false);
+    setOpenPopover(false);
   };
 
   const onSubmit = async (data: AddressFormData) => {
@@ -67,6 +68,7 @@ export default function AddressCard({
                 address={address}
                 onSubmit={(data: AddressFormData) => {
                   onSubmit(data);
+                  setOpenPopover(false);
                   handleClose();
                 }}
                 title="Update address"
