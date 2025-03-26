@@ -1,6 +1,7 @@
 import { logger } from "@/app/lib/config/logger";
 import { NewUser, UpdateUser } from "@/app/lib/db/types";
 import { createUserRepository } from "@/app/lib/repositories/user";
+import { revalidatePath } from "next/cache";
 
 export const createUserServices = () => {
   const repository = createUserRepository();
@@ -13,8 +14,8 @@ export const createUserServices = () => {
     page: number;
   }) => {
     try {
-      const users = await repository.findAll({ page, pageSize });
-      return { users };
+      const { data, totalItems } = await repository.findAll({ page, pageSize });
+      return { users: data, totalItems };
     } catch (error) {
       logger.error({ error }, "Failed to fetch users");
       return { error: "Failed to fetch users" };
@@ -24,6 +25,7 @@ export const createUserServices = () => {
   const create = async (data: NewUser) => {
     try {
       const user = await repository.create(data);
+      revalidatePath("/", "page");
       return { user };
     } catch (error) {
       logger.error({ error }, "Failed to create user");
@@ -34,6 +36,7 @@ export const createUserServices = () => {
   const remove = async (id: number) => {
     try {
       await repository.remove(id);
+      revalidatePath("/", "page");
     } catch (error) {
       logger.error({ error }, "Failed to remove user");
       return { error: "Failed to remove user" };
@@ -43,6 +46,7 @@ export const createUserServices = () => {
   const update = async ({ user, id }: { user: UpdateUser; id: number }) => {
     try {
       await repository.update({ data: user, id });
+      revalidatePath("/", "page");
     } catch (error) {
       logger.error({ error }, "Failed to update user");
       return { error: "Failed to update user" };

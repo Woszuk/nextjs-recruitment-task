@@ -15,6 +15,7 @@ export const createUserRepository = () => {
       .selectAll()
       .limit(pageSize)
       .offset(offset)
+      .orderBy("created_at desc")
       .execute();
 
     const totalItems = await db
