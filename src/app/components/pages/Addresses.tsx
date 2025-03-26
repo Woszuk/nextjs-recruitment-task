@@ -12,15 +12,20 @@ import { useState } from "react";
 type AddressesPageProps = {
   addresses?: AddressWithUserName[];
   error?: string;
+  totalItems?: number;
   userId: number;
+  page: number;
 };
 
 export default function AddressesPage({
   addresses,
   error,
   userId,
+  totalItems,
+  page,
 }: AddressesPageProps) {
   const [open, setOpen] = useState<boolean>(false);
+  const [currentPage, setCurrentPage] = useState(page);
 
   const handleClose = () => {
     setOpen(false);
@@ -40,6 +45,9 @@ export default function AddressesPage({
         title={`${addresses?.[0].name} Addresses` || "Addresses"}
         buttonLabel="Create Address"
         toggleOpen={() => setOpen((prev) => !prev)}
+        setCurrentPage={setCurrentPage}
+        currentPage={currentPage}
+        totalItems={totalItems || 0}
       >
         {error && <div>{error}</div>}
         {addresses && <AddressCards addresses={addresses} />}
