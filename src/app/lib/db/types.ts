@@ -9,8 +9,8 @@ export type UserTable = {
   initials?: string;
   email: string;
   status: UserStatus;
-  createdAt: Generated<Date>;
-  updatedAt: Generated<Date>;
+  created_at: Generated<Date>;
+  updated_at: Generated<Date>;
 };
 
 export type User = Selectable<UserTable>;
@@ -26,8 +26,8 @@ export type AddressTable = {
   country_code: string;
   street: string;
   building_number: string;
-  createdAt: Generated<Date>;
-  updatedAt: Generated<Date>;
+  created_at: Generated<Date>;
+  updated_at: Generated<Date>;
 };
 
 export type NewAddress = Insertable<AddressTable>;
