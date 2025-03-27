@@ -50,6 +50,7 @@ export default function UsersPage({
         currentPage={currentPage}
         totalItems={totalItems || 0}
         error={error}
+        userList={true}
       >
         {users && <UserCards users={users} />}
       </List>

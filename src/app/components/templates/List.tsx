@@ -11,6 +11,7 @@ type ListProps = {
   totalItems: number;
   currentPage: number;
   error?: string;
+  userList?: boolean;
   setCurrentPage: Dispatch<SetStateAction<number>>;
   toggleOpen: (e: React.MouseEvent<HTMLElement>) => void;
 };
@@ -22,6 +23,7 @@ export default function List({
   totalItems,
   currentPage,
   error,
+  userList = false,
   setCurrentPage,
   toggleOpen,
 }: ListProps) {
@@ -33,10 +35,22 @@ export default function List({
     router.push(`${pathname}?page=${page}`);
   };
 
+  const backToUserList = () => {
+    router.push(`/`);
+  };
+
   return (
     <div className="flex flex-col gap-5">
       <div className="relative flex items-center sm:justify-center justify-between ">
-        <p className="text-2xl font-bold uppercase">{title}</p>
+        {!userList && (
+          <div
+            className="uppercase font-bold cursor-pointer text-3xl p-2"
+            onClick={backToUserList}
+          >
+            &larr;
+          </div>
+        )}
+        <p className="text-xl sm:text-2xl font-bold uppercase">{title}</p>
         <Button
           className="sm:absolute sm:right-10"
           label={buttonLabel}
