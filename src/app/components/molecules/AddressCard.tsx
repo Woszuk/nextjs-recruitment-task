@@ -14,15 +14,10 @@ import { toast } from "react-toastify";
 
 type AddressCardProps = {
   children: React.ReactNode;
-  name: string;
   address: Address;
 };
 
-export default function AddressCard({
-  children,
-  address,
-  name,
-}: AddressCardProps) {
+export default function AddressCard({ children, address }: AddressCardProps) {
   const [openPopover, setOpenPopover] = useState<boolean>(false);
   const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
 

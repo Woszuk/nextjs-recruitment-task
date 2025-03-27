@@ -12,7 +12,7 @@ export default function AddressCards({ addresses }: AddressCardsProps) {
     <>
       {addresses.map((address, index) => {
         return (
-          <AddressCard key={index} address={address} name={address.name}>
+          <AddressCard key={index} address={address}>
             <div className="flex flex-col">
               <p className="font-bold">
                 Address Type: {capitalize(address.address_type)}
