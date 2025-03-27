@@ -1,3 +1,39 @@
+## Prepare to run application
+
+Create `.env` file:
+
+```
+ENVIRONMENT=local
+DATABASE_URL=postgresql://myuser:mypassword@postgres:5432/mydatabase
+```
+
+## Run application
+
+- Development:
+
+```
+pnpm install
+pnpm dev
+```
+
+- Docker:
+
+```
+docker compose up --build
+```
+
+## What can be done more
+
+- Adding unit test e.g Jest
+- Adding e2e test e.g playwright
+- Adding storybook
+- Adding GitHub Actions
+
+## What should be done differently
+
+- Not push directly to the main branch (I pushed to the main branch to avoid unnecessary branch creation and PR)
+- Not push commented out code and console.log (In PR this would have been caught by me and removed)
+
 ## Task
 
 Create a NextJS application which allows you to manage users' addresses. The database schema with sample records is provided for you, you can set it up by running:
@@ -10,17 +46,20 @@ docker compose up
 
 1. The UI should only include what's required in task's description. There is no need to build authentication, menus or any features besides what's required.
 2. The UI should consist of:
+
 - A paginated users' list. Add a mocked button to **Create** a new user above the list and in each record, a context menu with mocked **Edit** and **Delete** buttons.
 - A paginated users' addresses list. The list should be visible after clicking a user record in the users' list.
 - In the addresses list, include a context menu where you can **Edit** and **Delete** an address record.
-- Add the ability to **Create** a new user address. 
+- Add the ability to **Create** a new user address.
 - **Create** and **Edit** forms should be implemented in modals.
 - When inputting address fields, display a preview of the full address in the realtime in the following format:
+
 ```
 <street> <building_number>
 <post_code> <city>
 <country_code>
 ```
+
 3. You may use any UI library: MUI, AntD, etc.
 4. Handle data validation errors coming from the server.
 
