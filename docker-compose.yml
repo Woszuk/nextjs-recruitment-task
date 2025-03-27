@@ -14,5 +14,16 @@ services:
     ports:
       - "5432:5432"
 
+  app:
+    build: .
+    container_name: nextjs-task-app
+    restart: always
+    env_file:
+      - ./.env
+    depends_on:
+      - postgres
+    ports:
+      - "3000:3000"
+
 volumes:
   nextjs-task-db-data:
