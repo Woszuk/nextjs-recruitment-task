@@ -13,11 +13,18 @@ export default function Select({
   ...props
 }: InputProps) {
   return (
-    <InputContainer error={error} label={label} value={props.value}>
+    <InputContainer
+      error={error}
+      label={label}
+      value={props.value}
+      id={props.id}
+      select={true}
+    >
       <select
         {...props}
         className="peer border-1 border-primary-light outline-none p-3 rounded-sm"
       >
+        <option value="">Select one</option>
         {options.map((option) => (
           <option key={option.value} value={option.value}>
             {option.label}

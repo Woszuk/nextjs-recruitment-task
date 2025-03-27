@@ -10,6 +10,7 @@ type ListProps = {
   buttonLabel: string;
   totalItems: number;
   currentPage: number;
+  error?: string;
   setCurrentPage: Dispatch<SetStateAction<number>>;
   toggleOpen: (e: React.MouseEvent<HTMLElement>) => void;
 };
@@ -20,6 +21,7 @@ export default function List({
   buttonLabel,
   totalItems,
   currentPage,
+  error,
   setCurrentPage,
   toggleOpen,
 }: ListProps) {
@@ -41,13 +43,21 @@ export default function List({
           onClick={toggleOpen}
         />
       </div>
-      <div className="grid lg:grid-cols-2 gap-2 font-medium ">{children}</div>
-      <Pagination
-        currentPage={currentPage}
-        pageSize={PAGE_SIZE}
-        totalItems={totalItems}
-        onPageChange={handlePageChange}
-      />
+      {error ? (
+        <div className="text-xl text-center col-span-full mt-10">{error}</div>
+      ) : (
+        <>
+          <div className="grid lg:grid-cols-2 gap-2 font-medium ">
+            {children}
+          </div>
+          <Pagination
+            currentPage={currentPage}
+            pageSize={PAGE_SIZE}
+            totalItems={totalItems}
+            onPageChange={handlePageChange}
+          />
+        </>
+      )}
     </div>
   );
 }

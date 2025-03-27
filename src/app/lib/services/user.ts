@@ -1,6 +1,6 @@
-import { logger } from "@/app/lib/config/logger";
 import { NewUser, UpdateUser } from "@/app/lib/db/types";
 import { createUserRepository } from "@/app/lib/repositories/user";
+import { logError } from "@/app/utils/logError";
 import { revalidatePath } from "next/cache";
 
 export const createUserServices = () => {
@@ -17,39 +17,49 @@ export const createUserServices = () => {
       const { data, totalItems } = await repository.findAll({ page, pageSize });
       return { users: data, totalItems };
     } catch (error) {
-      logger.error({ error }, "Failed to fetch users");
+      logError({ error, message: "Failed to fetch users" });
       return { error: "Failed to fetch users" };
     }
   };
 
   const create = async (data: NewUser) => {
     try {
-      const user = await repository.create(data);
+      await repository.create(data);
       revalidatePath("/", "page");
-      return { user };
+      return { success: "User created successfully" };
     } catch (error) {
-      logger.error({ error }, "Failed to create user");
+      logError({ error, message: "Failed to create user" });
       return { error: "Failed to create user" };
     }
   };
 
   const remove = async (id: number) => {
+    const message = "Failed to remove user";
     try {
-      await repository.remove(id);
+      const { numDeletedRows } = await repository.remove(id);
+      if (!numDeletedRows) {
+        throw new Error(message);
+      }
       revalidatePath("/", "page");
+      return { success: "User removed successfully" };
     } catch (error) {
-      logger.error({ error }, "Failed to remove user");
-      return { error: "Failed to remove user" };
+      logError({ error, message });
+      return { error: message };
     }
   };
 
   const update = async ({ user, id }: { user: UpdateUser; id: number }) => {
+    const message = "Failed to update user";
     try {
-      await repository.update({ data: user, id });
+      const { numUpdatedRows } = await repository.update({ data: user, id });
+      if (!numUpdatedRows) {
+        throw new Error(message);
+      }
       revalidatePath("/", "page");
+      return { success: "User updated successfully" };
     } catch (error) {
-      logger.error({ error }, "Failed to update user");
-      return { error: "Failed to update user" };
+      logError({ error, message });
+      return { error: message };
     }
   };
 

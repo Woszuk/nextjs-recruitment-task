@@ -6,6 +6,7 @@ type InputContainerProps = {
   value: InputHTMLAttributes<HTMLInputElement>["value"];
   id?: string;
   error?: string;
+  select?: boolean;
 };
 
 export default function InputContainer({
@@ -14,6 +15,7 @@ export default function InputContainer({
   value,
   label,
   id,
+  select,
 }: InputContainerProps) {
   return (
     <div className="flex flex-col">
@@ -22,7 +24,7 @@ export default function InputContainer({
 
         <label
           className={`font-medium absolute left-1 px-1 text-gray-600 bg-gray-50 peer-focus:text-sm peer-focus:top-0 ${
-            value
+            value || select
               ? "top-0 text-sm -translate-y-1/2"
               : "top-1/2 -translate-y-1/2"
           }`}

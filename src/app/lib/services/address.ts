@@ -1,7 +1,7 @@
-import { logger } from "@/app/lib/config/logger";
 import { NewAddress, UpdateAddress } from "@/app/lib/db/types";
 import { AddressType } from "@/app/lib/enums/address";
 import { createAddressRepository } from "@/app/lib/repositories/address";
+import { logError } from "@/app/utils/logError";
 import { revalidatePath } from "next/cache";
 
 export const createAddressServices = () => {
@@ -24,22 +24,21 @@ export const createAddressServices = () => {
       });
       return { addresses, totalItems };
     } catch (error) {
-      logger.error({ error }, "Failed to fetch addresses");
+      logError({ error, message: "Failed to fetch addresses" });
       return { error: "Failed to fetch addresses" };
     }
   };
 
   const create = async (data: NewAddress) => {
     try {
-      const address = await repository.create(data);
+      await repository.create(data);
       revalidatePath("/[userId]/addresses", "page");
-      return { address };
+      return { success: "Address created successfully" };
     } catch (error) {
-      logger.error({ error }, "Failed to create address");
+      logError({ error, message: "Failed to create address" });
       return { error: "Failed to create address" };
     }
   };
-
   const remove = async ({
     userId,
     addressType,
@@ -49,12 +48,21 @@ export const createAddressServices = () => {
     addressType: AddressType;
     validFrom: Date;
   }) => {
+    const message = "Failed to remove address";
     try {
-      await repository.remove({ userId, addressType, validFrom });
+      const { numDeletedRows } = await repository.remove({
+        userId,
+        addressType,
+        validFrom,
+      });
+      if (!numDeletedRows) {
+        throw new Error(message);
+      }
       revalidatePath("/[userId]/addresses", "page");
+      return { success: "Address removed successfully" };
     } catch (error) {
-      logger.error({ error }, "Failed to remove address");
-      return { error: "Failed to remove address" };
+      logError({ error, message });
+      return { error: message };
     }
   };
 
@@ -69,17 +77,22 @@ export const createAddressServices = () => {
     addressType: AddressType;
     validFrom: Date;
   }) => {
+    const message = "Failed to update address";
     try {
-      await repository.update({
+      const { numUpdatedRows } = await repository.update({
         data: address,
         userId,
         addressType,
         validFrom,
       });
+      if (!numUpdatedRows) {
+        throw new Error(message);
+      }
       revalidatePath("/[userId]/addresses", "page");
+      return { success: "Address updated successfully" };
     } catch (error) {
-      logger.error({ error }, "Failed to update address");
-      return { error: "Failed to update address" };
+      logError({ error, message });
+      return { error: message };
     }
   };
 

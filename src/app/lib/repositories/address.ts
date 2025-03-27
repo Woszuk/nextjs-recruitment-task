@@ -51,7 +51,7 @@ export const createAddressRepository = () => {
       .execute();
   };
 
-  const remove = async ({
+  const remove = ({
     userId,
     addressType,
     validFrom,
@@ -60,15 +60,12 @@ export const createAddressRepository = () => {
     addressType: AddressType;
     validFrom: Date;
   }) => {
-    console.log(addressType, validFrom, userId);
-    const data = await db
+    return db
       .deleteFrom("users_addresses")
       .where("user_id", "=", userId)
       .where("address_type", "=", addressType)
       .where("valid_from", "=", validFrom)
       .executeTakeFirst();
-
-    console.log(data);
   };
 
   const update = ({

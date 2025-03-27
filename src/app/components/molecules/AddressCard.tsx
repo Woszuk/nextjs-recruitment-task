@@ -10,6 +10,7 @@ import {
   deleteAddress,
   updateAddress,
 } from "@/app/lib/actions/address-actions";
+import { toast } from "react-toastify";
 
 type AddressCardProps = {
   children: React.ReactNode;
@@ -31,22 +32,35 @@ export default function AddressCard({
   };
 
   const onDelete = async () => {
-    await deleteAddress({
+    const { error, success } = await deleteAddress({
       addressType: address.address_type,
       userId: address.user_id,
       validFrom: address.valid_from,
     });
+    if (error) {
+      toast.error(error);
+    }
+    if (success) {
+      toast.success(success);
+    }
     setOpenDeleteModal(false);
     setOpenPopover(false);
   };
 
   const onSubmit = async (data: AddressFormData) => {
-    await updateAddress({
+    const { error, success } = await updateAddress({
       address: { ...data, valid_from: new Date(data.valid_from) },
       addressType: address.address_type,
       userId: address.user_id,
       validFrom: address.valid_from,
     });
+
+    if (error) {
+      toast.error(error);
+    }
+    if (success) {
+      toast.success(success);
+    }
   };
 
   return (

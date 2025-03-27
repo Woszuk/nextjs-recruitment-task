@@ -8,6 +8,7 @@ import { createAddress } from "@/app/lib/actions/address-actions";
 import { AddressWithUserName } from "@/app/lib/db/types";
 import { AddressFormData } from "@/app/lib/schemas/address-schema";
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 type AddressesPageProps = {
   addresses?: AddressWithUserName[];
@@ -32,24 +33,29 @@ export default function AddressesPage({
   };
 
   const onSubmit = async (data: AddressFormData) => {
-    await createAddress({
+    const { error, success } = await createAddress({
       ...data,
       user_id: userId,
       valid_from: new Date(data.valid_from),
     });
-    handleClose();
+    if (error) {
+      toast.error(error);
+    } else {
+      toast.success(success);
+      handleClose();
+    }
   };
   return (
     <>
       <List
-        title={`${addresses?.[0].name} Addresses` || "Addresses"}
+        title={addresses ? `${addresses[0].name} Addresses` : "Addresses"}
         buttonLabel="Create Address"
         toggleOpen={() => setOpen((prev) => !prev)}
         setCurrentPage={setCurrentPage}
         currentPage={currentPage}
         totalItems={totalItems || 0}
+        error={error}
       >
-        {error && <div>{error}</div>}
         {addresses && <AddressCards addresses={addresses} />}
       </List>
       <Modal open={open} handleClose={handleClose}>

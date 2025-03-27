@@ -7,6 +7,7 @@ import { User } from "@/app/lib/db/types";
 import { deleteUser, updateUser } from "@/app/lib/actions/user-actions";
 import { UserFormData } from "@/app/lib/schemas/user-schema";
 import UserForm from "@/app/components/organisms/UserForm";
+import { toast } from "react-toastify";
 
 type UserCardProps = {
   children: React.ReactNode;
@@ -30,13 +31,26 @@ export default function UserCard({
   };
 
   const onDelete = async () => {
-    await deleteUser(user.id);
+    const { error, success } = await deleteUser(user.id);
+    if (error) {
+      toast.error(error);
+    }
+    if (success) {
+      toast.success(success);
+    }
     setOpenDeleteModal(false);
     setOpenPopover(false);
   };
 
   const onSubmit = async (data: UserFormData) => {
-    await updateUser({ user: data, id: user.id });
+    const { error, success } = await updateUser({ user: data, id: user.id });
+
+    if (error) {
+      toast.error(error);
+    }
+    if (success) {
+      toast.success(success);
+    }
   };
 
   return (

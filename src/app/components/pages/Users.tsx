@@ -8,6 +8,7 @@ import { createUser } from "@/app/lib/actions/user-actions";
 import { User } from "@/app/lib/db/types";
 import { useState } from "react";
 import { UserFormData } from "@/app/lib/schemas/user-schema";
+import { toast } from "react-toastify";
 
 type UsersPageProps = {
   users?: User[];
@@ -30,8 +31,13 @@ export default function UsersPage({
   };
 
   const onSubmit = async (data: UserFormData) => {
-    await createUser(data);
-    handleClose();
+    const { error, success } = await createUser(data);
+    if (error) {
+      toast.error(error);
+    } else {
+      toast.success(success);
+      handleClose();
+    }
   };
 
   return (
@@ -43,8 +49,8 @@ export default function UsersPage({
         setCurrentPage={setCurrentPage}
         currentPage={currentPage}
         totalItems={totalItems || 0}
+        error={error}
       >
-        {error && <div>{error}</div>}
         {users && <UserCards users={users} />}
       </List>
       <Modal open={open} handleClose={handleClose}>
