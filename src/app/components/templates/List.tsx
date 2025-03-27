@@ -44,7 +44,7 @@ export default function List({
       <div className="relative flex items-center sm:justify-center justify-between ">
         {!userList && (
           <div
-            className="uppercase font-bold cursor-pointer text-3xl p-2"
+            className="sm:absolute left-4 cursor-pointer text-3xl p-2"
             onClick={backToUserList}
           >
             &larr;
