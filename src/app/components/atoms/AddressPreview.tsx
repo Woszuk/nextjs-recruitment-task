@@ -8,10 +8,10 @@ type AddressPreviewProps = {
 
 export default function AddressPreview({ values }: AddressPreviewProps) {
   return (
-    <div className="relative w-full flex border-1 p-2 rounded-sm flex-col">
+    <div className="relative w-full flex border-1 p-2 rounded-sm flex-col gap-2">
       <p className="text-sm uppercase font-bold">Preview</p>
 
-      <div className="self-center">
+      <div className="overflow-auto pb-2">
         <Address
           buildingNumber={values().building_number}
           city={values().city}

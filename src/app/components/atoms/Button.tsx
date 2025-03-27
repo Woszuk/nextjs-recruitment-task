@@ -16,7 +16,7 @@ export default function Button({
 
   return (
     <button
-      className={`p-2 min-w-[60px] rounded-lg cursor-pointer ${buttonStyle} ${className} disabled:bg-gray-300`}
+      className={`p-1 sm:p-2 min-w-[60px] rounded-lg cursor-pointer ${buttonStyle} ${className} disabled:bg-gray-300`}
       {...props}
     >
       {label}

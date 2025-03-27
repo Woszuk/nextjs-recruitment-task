@@ -1,7 +1,7 @@
 import { useForm, Controller } from "react-hook-form";
 import { capitalize } from "@/app/utils/capitalize";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Form from "@/app/components/templates/Form";
+import Form from "@/app/components/molecules/Form";
 import Select from "@/app/components/molecules/Select";
 import TextField from "@/app/components/molecules/TextField";
 import { Address } from "@/app/lib/db/types";
