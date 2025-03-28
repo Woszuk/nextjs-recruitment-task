@@ -12,7 +12,7 @@ export type Repository<T, NewT, UpdateT> = {
     page: number;
     pageSize: number;
     conditions?: Partial<T>;
-  }) => Promise<{ data: T[]; totalItems: number }>;
+  }) => Promise<{ data: T[]; totalItems?: string }>;
   create: (data: NewT) => Promise<{ data: T }>;
   update: (params: {
     data: UpdateT;
@@ -51,7 +51,7 @@ export class BaseRepository<T, NewT, UpdateT>
     page: number;
     pageSize: number;
     conditions?: Partial<T>;
-  }): Promise<{ data: T[]; totalItems: number }> {
+  }): Promise<{ data: T[]; totalItems?: string }> {
     const { page, pageSize, conditions } = params;
     const offset = (page - 1) * pageSize;
     let query = this.db
@@ -74,7 +74,7 @@ export class BaseRepository<T, NewT, UpdateT>
 
     let totalItemsQuery = this.db
       .selectFrom(this.tableName)
-      .select(({ fn }) => fn.count<number>("created_at").as("total"));
+      .select(({ fn }) => fn.count<string>("created_at").as("total"));
 
     if (conditions) {
       const whereConditions = this.createWhereConditions(conditions);
@@ -86,7 +86,7 @@ export class BaseRepository<T, NewT, UpdateT>
 
     const totalItems = await totalItemsQuery.executeTakeFirst();
 
-    return { data, totalItems: totalItems?.total || 0 };
+    return { data, totalItems: totalItems?.total };
   }
 
   async create(data: NewT): Promise<{ data: T }> {
