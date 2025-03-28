@@ -4,6 +4,7 @@ import AddressesPage from "@/app/components/pages/Addresses";
 import { PAGE_SIZE } from "@/app/constants";
 import { getAddresses } from "@/app/lib/actions/address-actions";
 import { getUser } from "@/app/lib/actions/user-actions";
+import { notFound } from "next/navigation";
 
 export default async function Addresses({
   params,
@@ -23,11 +24,15 @@ export default async function Addresses({
 
   const { data: userData, error: userError } = await getUser(userId);
 
+  if (!userData) {
+    notFound();
+  }
+
   return (
     <AddressesPage
       addresses={data}
       user={userData}
-      totalItems={totalItems}
+      totalItems={Number(totalItems)}
       userId={userId}
       error={error || userError}
       page={page}

@@ -17,6 +17,11 @@ export default async function Users({
   });
 
   return (
-    <UsersPage users={data} totalItems={totalItems} error={error} page={page} />
+    <UsersPage
+      users={data}
+      totalItems={Number(totalItems)}
+      error={error}
+      page={page}
+    />
   );
 }
