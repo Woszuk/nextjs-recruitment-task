@@ -12,6 +12,7 @@ import {
 } from "@/app/lib/schemas/address-schema";
 import { AddressType } from "@/app/lib/enums/address";
 import AddressPreview from "@/app/components/atoms/AddressPreview";
+import { toLocalDatetime } from "@/app/utils/date";
 
 type AddressFormProps = {
   onSubmit: (data: AddressFormData) => void;
@@ -29,14 +30,14 @@ export default function AddressForm({
   const { handleSubmit, control, watch } = useForm<AddressFormData>({
     defaultValues: {
       address_type: address?.address_type || AddressType.HOME,
-      post_code: address?.post_code || undefined,
-      building_number: address?.building_number || undefined,
-      city: address?.city || undefined,
+      post_code: address?.post_code || "",
+      building_number: address?.building_number || "",
+      city: address?.city || "",
       country_code: address?.country_code || undefined,
-      street: address?.street || undefined,
+      street: address?.street || "",
       valid_from: address?.valid_from
-        ? new Date(address.valid_from).toISOString().slice(0, 19)
-        : new Date().toISOString().slice(0, 19),
+        ? toLocalDatetime(address.valid_from)
+        : toLocalDatetime(new Date()),
     },
     resolver: zodResolver(addressSchema),
   });
