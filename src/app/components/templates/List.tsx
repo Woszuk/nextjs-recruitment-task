@@ -61,15 +61,23 @@ export default function List({
         <div className="text-xl text-center col-span-full mt-10">{error}</div>
       ) : (
         <>
-          <div className="grid lg:grid-cols-2 gap-2 font-medium ">
-            {children}
-          </div>
-          <Pagination
-            currentPage={currentPage}
-            pageSize={PAGE_SIZE}
-            totalItems={totalItems}
-            onPageChange={handlePageChange}
-          />
+          {totalItems !== 0 ? (
+            <>
+              <div className="grid lg:grid-cols-2 gap-2 font-medium ">
+                {children}
+              </div>
+              <Pagination
+                currentPage={currentPage}
+                pageSize={PAGE_SIZE}
+                totalItems={totalItems}
+                onPageChange={handlePageChange}
+              />
+            </>
+          ) : (
+            <div className="text-center font-bold text-2xl mt-10">
+              No elements!
+            </div>
+          )}
         </>
       )}
     </div>
