@@ -1,10 +1,10 @@
 import Address from "@/app/components/atoms/Address";
 import AddressCard from "@/app/components/molecules/AddressCard";
-import { AddressWithUserName } from "@/app/lib/db/types";
+import { Address as AddressType } from "@/app/lib/db/types";
 import { capitalize } from "@/app/utils/capitalize";
 
 type AddressCardsProps = {
-  addresses: AddressWithUserName[];
+  addresses: AddressType[];
 };
 
 export default function AddressCards({ addresses }: AddressCardsProps) {

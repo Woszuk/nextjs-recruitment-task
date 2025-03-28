@@ -4,7 +4,7 @@ import { NewAddress, UpdateAddress } from "@/app/lib/db/types";
 import { AddressType } from "@/app/lib/enums/address";
 import { addressServices } from "@/app/lib/services/address";
 
-export async function getUserWithAddresses({
+export async function getAddresses({
   pageSize,
   page,
   userId,
@@ -13,7 +13,11 @@ export async function getUserWithAddresses({
   page: number;
   userId: number;
 }) {
-  return addressServices.getUserWithAddresses({ pageSize, page, userId });
+  return addressServices.getAll({
+    pageSize,
+    page,
+    conditions: { user_id: userId },
+  });
 }
 
 export async function createAddress(address: NewAddress) {
@@ -29,7 +33,13 @@ export async function deleteAddress({
   addressType: AddressType;
   validFrom: Date;
 }) {
-  return addressServices.remove({ userId, addressType, validFrom });
+  return addressServices.remove({
+    conditions: {
+      user_id: userId,
+      address_type: addressType,
+      valid_from: validFrom,
+    },
+  });
 }
 
 export async function updateAddress({
@@ -43,5 +53,12 @@ export async function updateAddress({
   addressType: AddressType;
   validFrom: Date;
 }) {
-  return addressServices.update({ address, userId, addressType, validFrom });
+  return addressServices.update({
+    conditions: {
+      user_id: userId,
+      address_type: addressType,
+      valid_from: validFrom,
+    },
+    data: address,
+  });
 }

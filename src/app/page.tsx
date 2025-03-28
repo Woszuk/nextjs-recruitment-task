@@ -11,17 +11,12 @@ export default async function Users({
 }) {
   const page = Number((await searchParams).page) || 1;
 
-  const { error, users, totalItems } = await getUsers({
+  const { error, data, totalItems } = await getUsers({
     pageSize: PAGE_SIZE,
     page,
   });
 
   return (
-    <UsersPage
-      users={users}
-      totalItems={totalItems}
-      error={error}
-      page={page}
-    />
+    <UsersPage users={data} totalItems={totalItems} error={error} page={page} />
   );
 }

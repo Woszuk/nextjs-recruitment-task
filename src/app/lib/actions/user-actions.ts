@@ -3,6 +3,10 @@
 import { NewUser, UpdateUser } from "@/app/lib/db/types";
 import { userServices } from "@/app/lib/services/user";
 
+export async function getUser(id: number) {
+  return userServices.getOne({ id });
+}
+
 export async function getUsers({
   pageSize,
   page,
@@ -18,7 +22,7 @@ export async function createUser(user: NewUser) {
 }
 
 export async function deleteUser(id: number) {
-  return userServices.remove(id);
+  return userServices.remove({ conditions: { id } });
 }
 
 export async function updateUser({
@@ -28,5 +32,5 @@ export async function updateUser({
   user: UpdateUser;
   id: number;
 }) {
-  return userServices.update({ user, id });
+  return userServices.update({ conditions: { id }, data: user });
 }

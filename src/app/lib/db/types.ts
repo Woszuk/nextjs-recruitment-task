@@ -31,10 +31,9 @@ export type AddressTable = {
   updated_at: Generated<Date>;
 };
 
+export type Address = Selectable<AddressTable>;
 export type NewAddress = Insertable<AddressTable>;
 export type UpdateAddress = Updateable<AddressTable>;
-export type Address = Selectable<AddressTable>;
-export type AddressWithUserName = Address & { name: string };
 
 export type Database = {
   users: UserTable;

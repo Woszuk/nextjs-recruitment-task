@@ -5,13 +5,14 @@ import AddressCards from "@/app/components/organisms/AddressCards";
 import AddressForm from "@/app/components/organisms/AddressForm";
 import List from "@/app/components/templates/List";
 import { createAddress } from "@/app/lib/actions/address-actions";
-import { AddressWithUserName } from "@/app/lib/db/types";
+import { Address, User } from "@/app/lib/db/types";
 import { AddressFormData } from "@/app/lib/schemas/address-schema";
 import { useState } from "react";
 import { toast } from "react-toastify";
 
 type AddressesPageProps = {
-  addresses?: AddressWithUserName[];
+  addresses?: Address[];
+  user?: User | null;
   error?: string;
   totalItems?: number;
   userId: number;
@@ -20,11 +21,16 @@ type AddressesPageProps = {
 
 export default function AddressesPage({
   addresses,
+  user,
   error,
   userId,
   totalItems,
   page,
 }: AddressesPageProps) {
+  const userName = user?.first_name
+    ? `${user.first_name} ${user.last_name}`
+    : user?.last_name ?? "";
+
   const [open, setOpen] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState(page);
 
@@ -48,7 +54,7 @@ export default function AddressesPage({
   return (
     <>
       <List
-        title={addresses ? `${addresses[0].name} Addresses` : "Addresses"}
+        title={addresses ? `${userName} Addresses` : "Addresses"}
         buttonLabel="Create Address"
         toggleOpen={() => setOpen((prev) => !prev)}
         setCurrentPage={setCurrentPage}
