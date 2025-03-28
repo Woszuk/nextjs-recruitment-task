@@ -54,7 +54,7 @@ export default function AddressesPage({
   return (
     <>
       <List
-        title={addresses ? `${userName} Addresses` : "Addresses"}
+        title={`${userName} Addresses`}
         buttonLabel="Create Address"
         toggleOpen={() => setOpen((prev) => !prev)}
         setCurrentPage={setCurrentPage}
